@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                // Cloner le projet depuis GitHub
+                sh 'cd /home/devops'
                 git url: 'https://github.com/BrodyGaudel/backend.git', branch: 'main' // Remplacez par votre URL et branche
                 dir('backend') {
                   sh 'pwd'
