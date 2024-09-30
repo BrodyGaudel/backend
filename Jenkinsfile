@@ -1,51 +1,45 @@
 pipeline {
-    agent any // Utilise n'importe quel agent disponible
+    agent any
+
+    environment {
+        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
+        DOCKER_HUB_REPO = 'mounanga'
+        KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-credentials'
+    }
 
     stages {
-        stage('Clone Repository') {
+        stage('CLONE') {
             steps {
-                sh 'cd /home/devops'
-                git url: 'https://github.com/BrodyGaudel/backend.git', branch: 'main' // Remplacez par votre URL et branche
+                sh 'git clone https://github.com/BrodyGaudel/backend.git'
+            }
+        }
+        stage('INSTALL') {
+            steps {
                 dir('backend') {
-                  sh 'pwd'
+                    sh 'mvn clean install -DskipTests'
                 }
             }
         }
-
-        stage('Maven Clean and Install') {
+        stage('TEST') {
             steps {
-                script {
-                    // Exécuter mvn clean install
-                    sh 'mvn clean install'
+                dir('backend') {
+                    sh 'mvn test'
                 }
             }
         }
-
-        stage('Maven Package') {
+        stage('PACKAGE') {
             steps {
-                script {
-                    // Exécuter mvn package
-                    sh 'mvn package'
+                dir('backend') {
+                    sh 'mvn package -DskipTests'
                 }
             }
         }
-
-        stage('SonarQube Analysis') {
+        stage('ANALYSE') {
             steps {
-                script {
-                    // Exécuter mvn sonar:sonar
+                dir('backend') {
                     sh 'mvn sonar:sonar'
                 }
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Build and SonarQube analysis completed successfully!'
-        }
-        failure {
-            echo 'Build or SonarQube analysis failed.'
         }
     }
 }
