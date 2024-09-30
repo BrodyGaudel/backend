@@ -1,12 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
-        DOCKER_HUB_REPO = 'mounanga'
-        KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-credentials'
-    }
-
     stages {
         stage('CLONE') {
             steps {
@@ -31,13 +25,6 @@ pipeline {
             steps {
                 dir('backend') {
                     sh 'mvn package -DskipTests'
-                }
-            }
-        }
-        stage('ANALYSE') {
-            steps {
-                dir('backend') {
-                    sh 'mvn sonar:sonar'
                 }
             }
         }
