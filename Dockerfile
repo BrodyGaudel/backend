@@ -7,7 +7,7 @@ LABEL maintainer="Brody Gaudel MOUNANGA BOUKA"
 # Setting environment variables
 ENV MYSQL_USER=root
 ENV MYSQL_PWD=root
-ENV MYSQL_HOST=172.20.0.2
+ENV MYSQL_HOST=172.18.0.2
 ENV MYSQL_PORT=3306
 ENV MYSQL_DATABASE=products_db
 
