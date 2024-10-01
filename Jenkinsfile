@@ -44,13 +44,29 @@ pipeline {
                 }
             }
         }
+        stage('BUILD IMAGE') {
+            steps {
+                dir('backend') {
+                    sh 'docker build -t backend-image:latest .'
+                }
+            }
+        }
+        stage('RUN CONTAINER') {
+            steps {
+                dir('backend') {
+                    sh 'docker stop backend-container || true && docker rm backend-container || true'
+
+                    sh 'docker run -d --name backend-container --network devops-network -p 8888:8888 backend-image:latest'
+                }
+            }
+        }
     }
 
     post {
-        // Vérification du résultat SonarQube après l'analyse
+        // Checking the SonarQube result after the analysis
         always {
             script {
-                // Attendre que l'analyse SonarQube soit terminée
+                // Wait for the SonarQube analysis to complete
                 timeout(time: 1, unit: 'HOURS') {
                     waitForQualityGate abortPipeline: true
                 }
