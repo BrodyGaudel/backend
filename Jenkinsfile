@@ -37,6 +37,13 @@ pipeline {
                 }
             }
         }
+        stage('DEPLOY') {
+            steps {
+                dir('backend') {
+                    sh 'mvn deploy -DaltDeploymentRepository=nexus-releases::default::http://192.168.87.128:8081/repository/maven-releases/ -DskipTests -Dusername=admin -Dpassword=devops'
+                }
+            }
+        }
     }
 
     post {
