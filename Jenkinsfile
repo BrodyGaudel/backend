@@ -40,17 +40,10 @@ pipeline {
         stage('DEPLOY') {
             steps {
                 dir('backend') {
-                    sh '''
-                        mvn deploy -X -e \
-                        -DaltDeploymentRepository=nexus-releases::http://192.168.87.128:8081/repository/maven-centrale-repository/ \
-                        -DskipTests \
-                        -Dusername=jenkins \
-                        -Dpassword=devops
-                    '''
+                    sh 'mvn deploy -DskipTests -Dusername=admin -Dpassword=devops'
                 }
             }
         }
-
     }
 
     post {
