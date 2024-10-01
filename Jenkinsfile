@@ -42,9 +42,9 @@ pipeline {
                 dir('backend') {
                     sh '''
                         mvn deploy -X -e \
-                        -DaltDeploymentRepository=nexus-releases::http://192.168.87.128:8081/repository/maven-releases/ \
+                        -DaltDeploymentRepository=nexus-releases::http://192.168.87.128:8081/repository/maven-centrale-repository/ \
                         -DskipTests \
-                        -Dusername=admin \
+                        -Dusername=jenkins \
                         -Dpassword=devops
                     '''
                 }
